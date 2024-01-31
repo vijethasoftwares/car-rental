@@ -34,7 +34,7 @@ export async function create(req: Request, res: Response) {
 
     if (car.image) {
       if (!(await Helper.exists(env.CDN_CARS))) {
-        await fs.mkdir(env.CDN_CARS, { recursive: true })
+        // await fs.mkdir(env.CDN_CARS, { recursive: true })
       }
 
       const image = path.join(env.CDN_TEMP_CARS, body.image)
@@ -214,7 +214,7 @@ export async function createImage(req: Request, res: Response) {
     }
 
     if (!(await Helper.exists(env.CDN_TEMP_CARS))) {
-      await fs.mkdir(env.CDN_TEMP_CARS, { recursive: true })
+      // await fs.mkdir(env.CDN_TEMP_CARS, { recursive: true })
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
@@ -253,7 +253,7 @@ export async function updateImage(req: Request, res: Response) {
 
     if (car) {
       if (!(await Helper.exists(env.CDN_CARS))) {
-        await fs.mkdir(env.CDN_CARS, { recursive: true })
+        // await fs.mkdir(env.CDN_CARS, { recursive: true })
       }
 
       if (car.image) {

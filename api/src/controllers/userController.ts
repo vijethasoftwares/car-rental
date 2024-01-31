@@ -156,7 +156,7 @@ export async function create(req: Request, res: Response) {
 
         try {
           if (!await Helper.exists(env.CDN_USERS)) {
-            await fs.mkdir(env.CDN_USERS, { recursive: true })
+            // await fs.mkdir(env.CDN_USERS, { recursive: true })
           }
           await fs.rename(avatar, newPath)
           user.avatar = filename
@@ -891,11 +891,12 @@ export async function createAvatar(req: Request, res: Response) {
       console.error(`[user.createAvatar] ${msg}`)
       return res.status(204).send(msg)
     }
-
+    console.log('error found')
     if (!(await Helper.exists(env.CDN_TEMP_USERS))) {
-      await fs.mkdir(env.CDN_TEMP_USERS, { recursive: true })
+      console.log('error found insde')
+      // await fs.mkdir(env.CDN_TEMP_USERS, { recursive: true })
     }
-
+    console.log('error found outside')
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
@@ -925,22 +926,24 @@ export async function updateAvatar(req: Request, res: Response) {
       console.error(`[user.createAvatar] ${msg}`)
       return res.status(204).send(msg)
     }
-
+    console.log('error not found')
     const user = await User.findById(userId)
 
     if (user) {
       if (!(await Helper.exists(env.CDN_USERS))) {
-        await fs.mkdir(env.CDN_USERS, { recursive: true })
+        console.log('error not found in cdn users')
+        // await fs.mkdir(env.CDN_USERS)
       }
 
       if (user.avatar && !user.avatar.startsWith('http')) {
+        console.log('error not found in https users')
         const avatar = path.join(env.CDN_USERS, user.avatar)
 
         if (await Helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
-
+      console.log('error not found outside')
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
       const filepath = path.join(env.CDN_USERS, filename)
 
